@@ -1232,6 +1232,7 @@
 				var $t = this, i, l, $th, $resizing, grid = $t.grid, cm = $t.p.colModel, hc,
 					thead = $("table.ui-jqgrid-htable thead", grid.hDiv);
 				if (!grid) { return; }
+				delete this.grid.groupHeaders;
 
 				$($t).off(".setGroupHeaders");
 				var $tr = $("<tr>", { role: "row" }).addClass("ui-jqgrid-labels");
@@ -1294,6 +1295,7 @@
 
 				$(ts).prepend($thead);
 				$tr = $("<tr>", { role: "row" }).addClass("ui-jqgrid-labels jqg-third-row-header");
+				this.grid.groupHeaders = [];
 				for (i = 0; i < cml; i++) {
 					th = ths[i].el;
 					$th = $(th);
@@ -1337,6 +1339,12 @@
 
 						$th.before($colHeader); // insert new column header before the current
 						$tr.append(th);         // move the current header in the next row
+						this.grid.groupHeaders.push({
+							el: $colHeader[0],
+							numberOfColumns: cghi.numberOfColumns,
+							numberOfVisibleColumns: cVisibleColumns,
+							title: cghi.titleText
+						});
 
 						// set the counter of headers which will be moved in the next row
 						skip = numberOfColumns - 1;
@@ -1345,6 +1353,12 @@
 							if (o.useColSpanStyle) {
 								// expand the header height to two rows
 								$th.attr("rowspan", $trLabels.length + 1); // consider to use ($th.attr("rowspan") || 1) instead of $trLabels.length
+								this.grid.groupHeaders.push({
+									el: th,
+									numberOfColumns: 1,
+									numberOfVisibleColumns: 0,
+									title: ''
+								});
 							} else {
 								$("<th>")
 									.addClass(thClasses)
