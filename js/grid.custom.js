@@ -1353,6 +1353,12 @@
 							if (o.useColSpanStyle) {
 								// expand the header height to two rows
 								$th.attr("rowspan", $trLabels.length + 1); // consider to use ($th.attr("rowspan") || 1) instead of $trLabels.length
+								this.grid.groupHeaders.push({
+									el: th,
+									numberOfColumns: 1,
+									numberOfVisibleColumns: 0,
+									title: ''
+								});
 							} else {
 								$("<th>")
 									.addClass(thClasses)
@@ -1365,12 +1371,6 @@
 							$tr.append(th);
 							skip--;
 						}
-						this.grid.groupHeaders.push({
-							el: th,
-							numberOfColumns: 1,
-							numberOfVisibleColumns: 0,
-							title: ''
-						});
 					}
 				}
 				$theadInTable = $(ts).children("thead");
